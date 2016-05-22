@@ -20,7 +20,6 @@ static struct white_process* whiterow_from_string(char *str);
 static int is_already_whitelisted(struct white_process *head, struct white_process *new_row);
 static char * whitelist_print(struct white_process *row, char * buf, size_t *avail);
 
-#define ALSOROOT 1
 #include "whitelist_helper.c"
 
 /* Separator for the whitelisting */
@@ -110,8 +109,10 @@ is_whitelisted(const char *filename, const char *argv_start, size_t argv_size)
 
 	read_lock_irqsave(&whitelist_rwlock, flags);
 
+#ifdef ALSOROOT
 	if ((!also_root) && current_is_root())
 		goto whitelisted;
+#endif /* ALSOROOT */
 
 	row = whitelist;
 	while (row != NULL) {

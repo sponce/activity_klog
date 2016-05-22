@@ -52,6 +52,7 @@ MODULE_PARM_DESC(whitelist, " A coma separated list of strings that contains"
 		 " The format of the string must be '${executable}|${argv_start}'."
 		 " The |${argv_start} part is optional.");
 
+#ifdef ALSOROOT
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 36)
 module_param_call(whitelist_include_root, &whitelist_root_param_set, &whitelist_root_param_get, NULL, 0600);
 #else /* LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 36) */
@@ -59,6 +60,7 @@ module_param_cb(whitelist_include_root, &whitelist_root_param, NULL, 0600);
 #endif /* LINUX_VERSION_CODE ? KERNEL_VERSION(2, 6, 36) */
 MODULE_PARM_DESC(whitelist_include_root, "A boolean indicating if root actions"
 		 " should be whitelisted like actions from other users or not.");
+#endif /* ALSOROOT */
 
 /************************************/
 /*             MODULE DEF           */

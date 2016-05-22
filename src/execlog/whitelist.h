@@ -9,6 +9,7 @@
 
 #define WHITELISTED 1
 #define NOT_WHITELISTED 0
+#define ALSOROOT 1
 
 /* Probes need to resolve those absolute path.
  * For memory reason, those path lentgh must be bounded.
@@ -18,11 +19,15 @@
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 36)
 int whitelist_param_set(const char *buf, struct kernel_param *kp);
 int whitelist_param_get(char *buffer, struct kernel_param *kp);
+#ifdef ALSOROOT
 int whitelist_root_param_set(const char *buf, struct kernel_param *kp);
 int whitelist_root_param_get(char *buffer, struct kernel_param *kp);
+#endif /* ALSOROOT */
 #else /* LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 36) */
 extern const struct kernel_param_ops whitelist_param;
+#ifdef ALSOROOT
 extern const struct kernel_param_ops whitelist_root_param;
+#endif /* ALSOROOT */
 #endif /* if LINUX_VERSION_CODE ? KERNEL_VERSION(2, 6, 36) */
 
 int is_whitelisted(const char *filename, const char *argv_start, size_t argv_size);
